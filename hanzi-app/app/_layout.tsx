@@ -3,7 +3,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import 'react-native-reanimated';
 
@@ -29,24 +29,25 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+  const [dbReady, setDbReady] = useState(Platform.OS === 'web');
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-      if (Platform.OS !== 'web') {
-        initDatabase()
-          .then(() => seedHSKCharacters())
-          .catch(console.error);
-      }
+    if (!loaded) return;
+    SplashScreen.hideAsync();
+    if (Platform.OS !== 'web') {
+      initDatabase()
+        .then(() => seedHSKCharacters())
+        .then(() => setDbReady(true))
+        .catch(console.error);
     }
   }, [loaded]);
 
-  if (!loaded) {
+  // Hold render until fonts AND database are ready so tabs never see an empty DB.
+  if (!loaded || !dbReady) {
     return null;
   }
 
