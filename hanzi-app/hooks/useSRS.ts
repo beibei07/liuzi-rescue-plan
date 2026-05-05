@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Platform } from 'react-native';
 import {
   getDueCards,
   rateCard,
@@ -24,6 +25,10 @@ export function useSRS(dueLimit: number = 50): UseSRSResult {
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
+    if (Platform.OS === 'web') {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
