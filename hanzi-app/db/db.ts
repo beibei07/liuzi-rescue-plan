@@ -16,4 +16,12 @@ export async function initDatabase(): Promise<void> {
   await database.execAsync(CREATE_QUOTES);
   await database.execAsync(CREATE_PRACTICE_LOG);
   await database.execAsync(CREATE_STREAK);
+  // Migration: add learning_steps if upgrading from schema without it
+  try {
+    await database.execAsync(
+      `ALTER TABLE char_cards ADD COLUMN learning_steps INTEGER DEFAULT 0`
+    );
+  } catch {
+    // Column already exists — safe to ignore
+  }
 }

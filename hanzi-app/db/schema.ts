@@ -12,6 +12,7 @@ export const CREATE_CHAR_CARDS = `
     scheduled_days  INTEGER DEFAULT 0,
     reps            INTEGER DEFAULT 0,
     lapses          INTEGER DEFAULT 0,
+    learning_steps  INTEGER DEFAULT 0,
     state           INTEGER DEFAULT 0,
     last_review     INTEGER
   );

@@ -1,4 +1,25 @@
 {
-  "_note": "高频500字词库 — 占位文件，待填充",
-  "characters": []
+  "_note": "高频500字词库 — 前20字为测试数据",
+  "characters": [
+    { "character": "的", "pinyin": "de",    "level": 1 },
+    { "character": "是", "pinyin": "shì",   "level": 1 },
+    { "character": "在", "pinyin": "zài",   "level": 1 },
+    { "character": "了", "pinyin": "le",    "level": 1 },
+    { "character": "不", "pinyin": "bù",    "level": 1 },
+    { "character": "人", "pinyin": "rén",   "level": 1 },
+    { "character": "我", "pinyin": "wǒ",    "level": 1 },
+    { "character": "有", "pinyin": "yǒu",   "level": 1 },
+    { "character": "他", "pinyin": "tā",    "level": 1 },
+    { "character": "这", "pinyin": "zhè",   "level": 1 },
+    { "character": "中", "pinyin": "zhōng", "level": 1 },
+    { "character": "大", "pinyin": "dà",    "level": 1 },
+    { "character": "来", "pinyin": "lái",   "level": 1 },
+    { "character": "上", "pinyin": "shàng", "level": 1 },
+    { "character": "国", "pinyin": "guó",   "level": 1 },
+    { "character": "到", "pinyin": "dào",   "level": 1 },
+    { "character": "说", "pinyin": "shuō",  "level": 1 },
+    { "character": "们", "pinyin": "men",   "level": 1 },
+    { "character": "日", "pinyin": "rì",    "level": 1 },
+    { "character": "字", "pinyin": "zì",    "level": 1 }
+  ]
 }

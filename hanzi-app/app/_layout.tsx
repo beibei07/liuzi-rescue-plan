@@ -9,6 +9,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { initDatabase } from '@/db/db';
+import { seedHSKCharacters } from '@/db/characters';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -38,7 +39,9 @@ export default function RootLayout() {
     if (loaded) {
       SplashScreen.hideAsync();
       if (Platform.OS !== 'web') {
-        initDatabase().catch(console.error);
+        initDatabase()
+          .then(() => seedHSKCharacters())
+          .catch(console.error);
       }
     }
   }, [loaded]);
