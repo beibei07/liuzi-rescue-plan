@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   StyleSheet, View, Text, TouchableOpacity,
-  ActivityIndicator, Platform, SafeAreaView,
+  ActivityIndicator, SafeAreaView,
 } from 'react-native';
 import { useSRS } from '@/hooks/useSRS';
 import { type UserRating } from '@/db/srs';
@@ -44,25 +44,11 @@ function DoneView({ total, mastered }: { total: number; mastered: number }) {
   );
 }
 
-// ─── Web placeholder ───────────────────────────────────────────────────────
-
-function WebView() {
-  return (
-    <View style={styles.center}>
-      <Text style={styles.doneEmoji}>📱</Text>
-      <Text style={styles.doneTitle}>请在手机上使用</Text>
-      <Text style={styles.doneSub}>Web 端不支持 SQLite，请用 Expo Go 扫码</Text>
-    </View>
-  );
-}
-
 // ─── Main screen ───────────────────────────────────────────────────────────
 
 export default function TodayPracticeScreen() {
   const { dueCards, stats, loading, submitRating } = useSRS();
   const [submitting, setSubmitting] = useState(false);
-
-  if (Platform.OS === 'web') return <WebView />;
 
   if (loading && !submitting) {
     return (

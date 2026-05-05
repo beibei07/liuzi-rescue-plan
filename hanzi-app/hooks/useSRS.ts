@@ -8,6 +8,17 @@ import {
   type CardStats,
   type UserRating,
 } from '@/db/srs';
+import {
+  mockGetDueCards,
+  mockRateCard,
+  mockGetCardStats,
+} from '@/db/mock';
+
+const isWeb = Platform.OS === 'web';
+
+const fetchDue    = isWeb ? mockGetDueCards    : getDueCards;
+const fetchStats  = isWeb ? mockGetCardStats   : getCardStats;
+const submitRate  = isWeb ? mockRateCard       : rateCard;
 
 export interface UseSRSResult {
   dueCards: CharCard[];
@@ -25,16 +36,12 @@ export function useSRS(dueLimit: number = 50): UseSRSResult {
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
-    if (Platform.OS === 'web') {
-      setLoading(false);
-      return;
-    }
     setLoading(true);
     setError(null);
     try {
       const [cards, cardStats] = await Promise.all([
-        getDueCards(dueLimit),
-        getCardStats(),
+        fetchDue(dueLimit),
+        fetchStats(),
       ]);
       setDueCards(cards);
       setStats(cardStats);
@@ -47,7 +54,7 @@ export function useSRS(dueLimit: number = 50): UseSRSResult {
 
   const submitRating = useCallback(
     async (cardId: number, rating: UserRating) => {
-      await rateCard(cardId, rating);
+      await submitRate(cardId, rating);
       await refresh();
     },
     [refresh]
