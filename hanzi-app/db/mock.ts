@@ -5,16 +5,16 @@
 import { type CharCard, type CardStats, type UserRating } from './srs';
 
 const DEFINITIONS: Record<string, string> = {
-  '的': JSON.stringify({ meaning: '结构助词', examples: ['今天的天气真好', '我的书包很重'] }),
-  '是': JSON.stringify({ meaning: '判断动词', examples: ['这是一本好书', '他是我的老师'] }),
-  '在': JSON.stringify({ meaning: '介词，表示位置', examples: ['我在图书馆学习', '书在桌子上'] }),
-  '了': JSON.stringify({ meaning: '助词，表示完成', examples: ['他走了很久', '我吃了一碗饭'] }),
-  '不': JSON.stringify({ meaning: '否定副词', examples: ['我不喜欢吃辣', '他不来上课'] }),
-  '人': JSON.stringify({ meaning: '名词，指人类', examples: ['路上人很多', '这个人很善良'] }),
-  '我': JSON.stringify({ meaning: '第一人称代词', examples: ['我喜欢看书', '我的家在北京'] }),
-  '有': JSON.stringify({ meaning: '动词，表示拥有或存在', examples: ['他有一本书', '教室里有人'] }),
-  '他': JSON.stringify({ meaning: '第三人称代词（男）', examples: ['他是我的朋友', '他很努力'] }),
-  '这': JSON.stringify({ meaning: '指示代词，指近处', examples: ['这本书很好看', '这里风景很美'] }),
+  '的': JSON.stringify({ meaning: '结构助词', examples: ['今天的天气真好', '我的书包很重'],    words: ['的确', '目的', '的士'] }),
+  '是': JSON.stringify({ meaning: '判断动词',   examples: ['这是一本好书', '他是我的老师'],  words: ['是否', '是非', '还是'] }),
+  '在': JSON.stringify({ meaning: '表示位置',   examples: ['我在图书馆学习', '书在桌子上'],  words: ['在乎', '在意', '正在'] }),
+  '了': JSON.stringify({ meaning: '表示完成',   examples: ['他走了很久', '我吃了一碗饭'],    words: ['了解', '了不起', '明了'] }),
+  '不': JSON.stringify({ meaning: '否定副词',   examples: ['我不喜欢吃辣', '他不来上课'],    words: ['不但', '不过', '不知道'] }),
+  '人': JSON.stringify({ meaning: '名词',       examples: ['路上人很多', '这个人很善良'],    words: ['人生', '人才', '人口'] }),
+  '我': JSON.stringify({ meaning: '第一人称',   examples: ['我喜欢看书', '我的家在北京'],    words: ['我们', '自我', '忘我'] }),
+  '有': JSON.stringify({ meaning: '表示拥有',   examples: ['他有一本书', '教室里有人'],      words: ['有趣', '有用', '有名'] }),
+  '他': JSON.stringify({ meaning: '第三人称男', examples: ['他是我的朋友', '他很努力'],      words: ['他们', '他人', '其他'] }),
+  '这': JSON.stringify({ meaning: '指示近处',   examples: ['这本书很好看', '这里风景很美'],  words: ['这里', '这样', '这么'] }),
 };
 
 const SEED: Omit<CharCard, 'id'>[] = [
@@ -65,14 +65,11 @@ export async function mockRateCard(cardId: number, rating: UserRating): Promise<
   const card = { ...queue[idx], reps: queue[idx].reps + 1 };
 
   if (rating === 1) {
-    // Again → move to end of queue (relearn soon)
     queue = [...queue.slice(0, idx), ...queue.slice(idx + 1), card];
   } else if (rating === 2) {
-    // Hard → move 3 positions back
     queue.splice(idx, 1);
     queue.splice(Math.min(idx + 3, queue.length), 0, card);
   } else {
-    // Good → remove from today's queue (scheduled for future)
     queue.splice(idx, 1);
     masteredCount += card.reps >= 3 ? 1 : 0;
   }

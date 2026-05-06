@@ -1,10 +1,16 @@
-import { useState } from 'react';
 import {
   ActivityIndicator, SafeAreaView, StyleSheet,
   Text, TouchableOpacity, View,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useSRS } from '@/hooks/useSRS';
+
+interface CardDef { meaning: string; examples: string[]; words?: string[] }
+
+function parseDef(raw: string | null): CardDef | null {
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
 
 export default function TodayPracticeScreen() {
   const { dueCards, stats, loading } = useSRS();
@@ -32,6 +38,7 @@ export default function TodayPracticeScreen() {
   }
 
   const card = dueCards[0];
+  const def   = parseDef(card.definition);
 
   // ── Practice queue ────────────────────────────────────────────────────────
   return (
@@ -54,10 +61,25 @@ export default function TodayPracticeScreen() {
         >
           <Text style={styles.character}>{card.character}</Text>
           {card.pinyin ? <Text style={styles.pinyin}>{card.pinyin}</Text> : null}
+
           <View style={styles.divider} />
-          <Text style={styles.hint}>
-            {card.reps === 0 ? '第一次见 — 点击开始手写练习' : `已练 ${card.reps} 次 — 点击继续`}
-          </Text>
+
+          {/* Example sentence */}
+          {def?.examples[0] ? (
+            <Text style={styles.defLine}>
+              <Text style={styles.defLabel}>例句：</Text>
+              {def.examples[0]}
+            </Text>
+          ) : null}
+
+          {/* Common words */}
+          {def?.words && def.words.length > 0 ? (
+            <Text style={styles.defLine}>
+              <Text style={styles.defLabel}>常见词组：</Text>
+              {def.words.join('、')}
+            </Text>
+          ) : null}
+
           <View style={styles.startBadge}>
             <Text style={styles.startBadgeText}>✏️ 开始练习</Text>
           </View>
@@ -103,7 +125,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%', backgroundColor: '#fff', borderRadius: 20,
-    paddingVertical: 40, paddingHorizontal: 24, alignItems: 'center', gap: 8,
+    paddingVertical: 32, paddingHorizontal: 24, alignItems: 'center', gap: 8,
     shadowColor: '#000', shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08, shadowRadius: 12, elevation: 3,
   },
@@ -111,9 +133,12 @@ const styles = StyleSheet.create({
   pinyin:    { fontSize: 22, color: '#E63946', letterSpacing: 1 },
   divider:   {
     height: StyleSheet.hairlineWidth, backgroundColor: '#eee',
-    width: '60%', marginVertical: 8,
+    width: '80%', marginVertical: 4,
   },
-  hint: { fontSize: 13, color: '#aaa' },
+
+  defLine:  { fontSize: 13, color: '#555', textAlign: 'center', lineHeight: 20 },
+  defLabel: { color: '#aaa' },
+
   startBadge: {
     marginTop: 8, paddingHorizontal: 20, paddingVertical: 8,
     borderRadius: 20, backgroundColor: '#E63946',
