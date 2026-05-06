@@ -78,12 +78,7 @@ export default function PracticeScreen() {
     setSubmitting(true);
     try {
       await submitRate(card.id, rating);
-      const next = await fetchDue(1);
-      if (next.length > 0 && next[0].id !== card.id) {
-        router.replace({ pathname: '/practice/[id]', params: { id: next[0].id } });
-      } else {
-        router.replace('/');
-      }
+      router.replace('/');
     } finally {
       setSubmitting(false);
     }
