@@ -73,7 +73,13 @@ const HandwritingCanvas = forwardRef<HandwritingCanvasRef, Props>(
           viewBox keeps the coordinate space fixed at size×size regardless of
           how the SVG element is actually displayed (ds may differ from size).
         */}
-        <Svg width={ds} height={ds} viewBox={`0 0 ${size} ${size}`} style={{ backgroundColor: '#fff' }}>
+        <Svg
+          width={ds}
+          height={ds}
+          viewBox={`0 0 ${size} ${size}`}
+          style={{ backgroundColor: '#fff' }}
+          pointerEvents="none"
+        >
           {finishedPaths.map((d, i) => (
             <Path key={i} d={d} stroke="#1a1a1a" strokeWidth={5}
               fill="none" strokeLinecap="round" strokeLinejoin="round" />
