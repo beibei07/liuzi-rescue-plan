@@ -186,6 +186,18 @@ CREATE TABLE IF NOT EXISTS streak (
 - 数据库操作全部封装在 `db/` 目录，页面组件不直接写 SQL
 - 每个功能模块独立文件，不把所有逻辑堆在一个文件里
 
+### Git 工作流
+
+- **频繁提交**：完成每个功能点、修复每个 bug 后立即 commit
+- **清晰的 commit message**：使用格式 `feat: 功能描述` / `fix: 修复描述` / `refactor: 重构描述`
+  - 例如：`feat: add handwriting canvas component`
+  - 例如：`fix: stroke animation replay on web platform`
+  - 例如：`refactor: extract SRS logic into hook`
+- **定期推送**：每完成 2-3 个相关功能后推送到 GitHub，确保工作不丢失
+- **分支策略**：主要工作在 `master` 分支，大功能可开 feature 分支后合并
+- **提交前检查**：确保代码可运行、无明显错误，避免提交 broken code
+- **Claude 的责任**：在完成每个功能模块后，主动执行 `git add`、`git commit`、`git push`，无需用户提醒
+
 ---
 
 ## 开发顺序（推荐）
