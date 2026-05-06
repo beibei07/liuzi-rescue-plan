@@ -32,8 +32,14 @@ const HandwritingCanvas = forwardRef<HandwritingCanvasRef, Props>(
     }));
 
     const commit = () => {
-      if (!activePathRef.current) return;
-      setFinishedPaths(prev => [...prev, activePathRef.current]);
+      const pathToCommit = activePathRef.current;
+      console.log('[HandwritingCanvas] commit called, path:', pathToCommit);
+      if (!pathToCommit) return;
+      setFinishedPaths(prev => {
+        const updated = [...prev, pathToCommit];
+        console.log('[HandwritingCanvas] finishedPaths updated, count:', updated.length);
+        return updated;
+      });
       activePathRef.current = '';
       setActivePath('');
       onStrokeEnd?.();
@@ -45,6 +51,7 @@ const HandwritingCanvas = forwardRef<HandwritingCanvasRef, Props>(
         onMoveShouldSetPanResponder:  () => true,
 
         onPanResponderGrant(e) {
+          console.log('[HandwritingCanvas] onPanResponderGrant');
           const s = scaleRef.current;
           const x = e.nativeEvent.locationX * s;
           const y = e.nativeEvent.locationY * s;
@@ -62,8 +69,14 @@ const HandwritingCanvas = forwardRef<HandwritingCanvasRef, Props>(
           setActivePath(d);
         },
 
-        onPanResponderRelease:   commit,
-        onPanResponderTerminate: commit, // fired when gesture is stolen (e.g. scroll)
+        onPanResponderRelease() {
+          console.log('[HandwritingCanvas] onPanResponderRelease');
+          commit();
+        },
+        onPanResponderTerminate() {
+          console.log('[HandwritingCanvas] onPanResponderTerminate');
+          commit();
+        },
       })
     ).current;
 
@@ -80,10 +93,13 @@ const HandwritingCanvas = forwardRef<HandwritingCanvasRef, Props>(
           style={{ backgroundColor: '#fff' }}
           pointerEvents="none"
         >
-          {finishedPaths.map((d, i) => (
-            <Path key={i} d={d} stroke="#1a1a1a" strokeWidth={5}
-              fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          ))}
+          {finishedPaths.map((d, i) => {
+            console.log('[HandwritingCanvas] rendering finished path', i, d.substring(0, 50));
+            return (
+              <Path key={i} d={d} stroke="#1a1a1a" strokeWidth={5}
+                fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            );
+          })}
           {activePath ? (
             <Path d={activePath} stroke="#1a1a1a" strokeWidth={5}
               fill="none" strokeLinecap="round" strokeLinejoin="round" />
