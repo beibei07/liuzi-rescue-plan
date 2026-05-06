@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 16,
     gap: 8,
+    alignItems: 'flex-start',
   },
 
   // Canvas panel
