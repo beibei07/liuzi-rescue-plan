@@ -162,3 +162,11 @@ export async function getCardStats(): Promise<CardStats> {
     mastered: masteredRow?.count ?? 0,
   };
 }
+
+/** Fetch a single card by primary key. Returns null if not found. */
+export async function getCard(id: number): Promise<CharCard | null> {
+  const db = await getDatabase();
+  return db.getFirstAsync<CharCard>(
+    `SELECT * FROM char_cards WHERE id = ?`, [id]
+  );
+}

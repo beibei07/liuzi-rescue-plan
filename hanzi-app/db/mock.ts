@@ -65,6 +65,10 @@ export async function mockRateCard(cardId: number, rating: UserRating): Promise<
   }
 }
 
+export async function mockGetCard(id: number): Promise<CharCard | null> {
+  return queue.find(c => c.id === id) ?? null;
+}
+
 export async function mockGetCardStats(): Promise<CardStats> {
   return {
     total: SEED.length,

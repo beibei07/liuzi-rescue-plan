@@ -62,6 +62,10 @@ function RootLayoutNav() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen
+          name="practice/[id]"
+          options={{ title: '练习', headerBackTitle: '返回', headerTintColor: '#E63946' }}
+        />
       </Stack>
     </ThemeProvider>
   );
